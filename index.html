@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Example</title>
+</head>
+<body>
+
+<h2>POST Request</h2>
+<form id="postDataForm">
+    <label for="postDataInput">Enter Data:</label>
+    <input type="text" id="postDataInput" name="postDataInput">
+    <button type="submit">Send Data</button>
+</form>
+<pre id="postDataResult"></pre>
+
+<script>
+
+    document.getElementById('postDataForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const inputData = document.getElementById('postDataInput').value;
+
+        fetch('http://localhost:8080/postdata', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ inputData }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('postDataResult').innerText = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+</script>
+</body>
+</html>
